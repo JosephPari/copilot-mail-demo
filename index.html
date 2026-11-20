@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Copilot Mail Prioritization Center</title>
+
+<style>
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+margin:0;
+background:#f4f7fb;
+}
+
+header{
+background:#2563eb;
+color:white;
+padding:24px;
+}
+
+h1{
+margin:0;
+}
+
+.stats{
+display:flex;
+gap:12px;
+margin-top:15px;
+}
+
+.stat{
+background:white;
+color:black;
+padding:12px;
+border-radius:10px;
+min-width:120px;
+}
+
+.board{
+display:flex;
+gap:16px;
+padding:20px;
+overflow-x:auto;
+}
+
+.column{
+background:#eef2f8;
+border-radius:12px;
+padding:16px;
+min-width:300px;
+}
+
+.card{
+background:white;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px;
+cursor:pointer;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-2px);
+}
+
+.score{
+font-weight:bold;
+color:#dc2626;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+z-index:999;
+}
+
+.modal-content{
+background:white;
+width:92%;
+height:90%;
+margin:20px auto;
+border-radius:16px;
+padding:20px;
+overflow:auto;
+}
+
+.layout{
+display:flex;
+gap:20px;
+height:80%;
+}
+
+.panel{
+flex:1;
+border:1px solid #ddd;
+padding:15px;
+border-radius:10px;
+overflow:auto;
+}
+
+textarea{
+width:100%;
+height:350px;
+border:1px solid #ddd;
+padding:12px;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 16px;
+border-radius:8px;
+cursor:pointer;
+margin-right:10px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+
+<h1>Copilot Mail Prioritization Center</h1>
+
+<p>
+245 emails analysés • 12 critiques • 28 importants
+</p>
+
+<div class="stats">
+
+<div class="stat">
+<b>12</b><br>Critiques
+</div>
+
+<div class="stat">
+<b>28</b><br>À traiter
+</div>
+
+<div class="stat">
+<b>4h30</b><br>Temps gagné
+</div>
+
+</div>
+
+</header>
+
+<div class="board">
+
+<div class="column">
+
+<h2>🔴 À traiter</h2>
+
+<div class="card" onclick="openTicket('fiscal')">
+
+<div class="score">Score IA 98</div>
+
+<b>Dossier Fiscal DGFIP</b>
+
+<p>Paiement avant le 30 novembre</p>
+
+✅ Réponse prête
+
+</div>
+
+<div class="card" onclick="openTicket('urbanisme')">
+
+<div class="score">Score IA 95</div>
+
+<b>Urbanisme</b>
+
+<p>Correction demandée</p>
+
+✅ Réponse prête
+
+</div>
+
+<div class="card" onclick="openTicket('sinistre')">
+
+<div class="score">Score IA 92</div>
+
+<b>Sinistre véhicule</b>
+
+<p>Documents à transmettre</p>
+
+✅ Réponse prête
+
+</div>
+
+</div>
+
+<div class="column">
+
+<h2>🟠 Important</h2>
+
+<div class="card" onclick="openTicket('kangourou')">
+
+<div class="score">Score IA 84</div>
+
+<b>Kangourou Kids</b>
+
+<p>Mandat à compléter</p>
+
+✅ Réponse prête
+
+</div>
+
+</div>
+
+</div>
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<h2 id="title"></h2>
+
+<div class="layout">
+
+<div class="panel">
+
+<h3>Email original</h3>
+
+<div id="mail"></div>
+
+</div>
+
+<div class="panel">
+
+<h3>Réponse générée par Copilot</h3>
+
+<textarea id="reply"></textarea>
+
+</div>
+
+</div>
+
+<br>
+
+<button>Envoyer</button>
+
+<button onclick="closeTicket()">
+Fermer
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function openTicket(type){
+
+document.getElementById("modal").style.display="block";
+
+const title=document.getElementById("title");
+const mail=document.getElementById("mail");
+const reply=document.getElementById("reply");
+
+if(type==="fiscal"){
+
+title.innerHTML="Dossier Fiscal DGFIP";
+
+mail.innerHTML=`
+<h4>Résumé IA</h4>
+
+<p>
+Première échéance de paiement demandée.
+Montant : 5 322 €.
+Action requise avant le 30 novembre.
+</p>
+`;
+
+reply.value=`
+Bonjour,
+
+Merci pour votre retour.
+
+Je prends note de votre demande concernant le règlement de la première échéance.
+
+Je procéderai au paiement dans les délais et vous retournerai l'échéancier signé dès réception.
+
+Bien cordialement
+
+Joseph Parisot
+`;
+}
+
+if(type==="urbanisme"){
+
+title.innerHTML="Dossier Urbanisme";
+
+mail.innerHTML=`
+<h4>Résumé IA</h4>
+
+<p>
+Correction du plan de masse demandée.
+Action requise rapidement.
+</p>
+`;
+
+reply.value=`
+Bonjour,
+
+Je vais procéder aux corrections demandées et mettre à jour le dossier dans les meilleurs délais.
+
+Bien cordialement
+`;
+}
+
+if(type==="sinistre"){
+
+title.innerHTML="Sinistre véhicule";
+
+mail.innerHTML=`
+<h4>Résumé IA</h4>
+
+<p>
+Documents justificatifs demandés par l'expert.
+</p>
+`;
+
+reply.value=`
+Bonjour,
+
+Je vais rassembler les documents demandés et vous les transmettre rapidement.
+
+Bien cordialement
+`;
+}
+
+if(type==="kangourou"){
+
+title.innerHTML="Kangourou Kids";
+
+mail.innerHTML=`
+<h4>Résumé IA</h4>
+
+<p>
+Mandat de prélèvement à compléter.
+</p>
+`;
+
+reply.value=`
+Bonjour,
+
+Merci pour votre message.
+
+Je vous transmets le mandat complété dans les meilleurs délais.
+
+Bien cordialement
+`;
+}
+
+}
+
+function closeTicket(){
+
+document.getElementById("modal").style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>
